@@ -16,13 +16,14 @@ datasource db {
 
 model Tweet {
     id        String   @id @default(uuid())
-    userID    String
+    userId    String
     content   String
     createdAt DateTime @default(now())
-    user      User     @relation(fields: [userID], references: [id], onDelete: Cascade)
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     likes     Like[]
 
-    @@index([userID])
+    @@unique([createdAt, id])
+    @@index([userId])
 }
 
 model Like {
@@ -53,6 +54,7 @@ model Account {
     user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
+    @@index([userId])
 }
 
 model Session {
